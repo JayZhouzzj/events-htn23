@@ -348,9 +348,9 @@ const events = [
               </p>
               <p class="font-semibold text-gray-900 text-left">
                 Related: 
-                <a href="#">
-                  event
-                </a>
+                <a v-for="id in event.related_events" :key="id" class="relative z-10 rounded-full bg-gray-50 py-1.5 px-3 font-medium text-gray-600 hover:bg-gray-100">{{
+                  id
+                }}</a>
               </p>
             </div>
           </div>
