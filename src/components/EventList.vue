@@ -1,9 +1,29 @@
 <script setup>
+import { computed } from 'vue'
+  
 defineProps({
   events: {
     type: Array,
     default: () => []
   }
+})
+
+const processedEvents = computed(() => {
+  // let processedEvents
+  // const events = result.sampleEvents
+  // for (let event of events) {
+  //   let processedEvent = event
+  //   processedEvent.related_events_info = {}
+  //   for (let related_id of event.related_events) {
+  //     otherEvent = events.find(e => e.id === related_id)
+  //     processedEvent.related_events_info[otherEvent.id] = {
+  //       "name": otherEvent.name,
+  //       "public_url": otherEvent.public_url,
+  //       "private_url": otherEvent.private_url,
+  //     }
+  //   }
+  // }
+  return this.events.sort((a, b) => a.start_time - b.start_time)
 })
 
 </script>

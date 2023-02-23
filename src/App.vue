@@ -3,6 +3,8 @@ import { useQuery } from '@vue/apollo-composable';
 import gql from 'graphql-tag';
 import EventList from './components/EventList.vue'
 
+const loggedIn = true;
+
 const EVENTS_QUERY = gql`
   query {
     sampleEvents {
@@ -24,6 +26,7 @@ const EVENTS_QUERY = gql`
 `
 
 const { result, loading, error } = useQuery(EVENTS_QUERY)
+
 </script>
 
 <template>
