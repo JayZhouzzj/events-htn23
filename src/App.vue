@@ -33,7 +33,10 @@ const { result, loading, error } = useQuery(EVENTS_QUERY)
   <div v-if="loading">Loading...</div>
   <div v-else-if="error">{{ error.message }}</div>
   <div v-else-if="result">
-    <EventList :events="result.sampleEvents" />
+    <EventList 
+      :events="result.sampleEvents" 
+      :loggedIn = "loggedIn"
+    />
   </div>
 </template>
 

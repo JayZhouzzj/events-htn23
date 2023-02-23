@@ -1,30 +1,20 @@
 <script setup>
 import { computed } from 'vue'
-  
+
 defineProps({
   events: {
     type: Array,
     default: () => []
+  },
+  loggedIn: {
+    type: Boolean,
+    default: false
   }
 })
 
-const processedEvents = computed(() => {
-  // let processedEvents
-  // const events = result.sampleEvents
-  // for (let event of events) {
-  //   let processedEvent = event
-  //   processedEvent.related_events_info = {}
-  //   for (let related_id of event.related_events) {
-  //     otherEvent = events.find(e => e.id === related_id)
-  //     processedEvent.related_events_info[otherEvent.id] = {
-  //       "name": otherEvent.name,
-  //       "public_url": otherEvent.public_url,
-  //       "private_url": otherEvent.private_url,
-  //     }
-  //   }
-  // }
-  return this.events.sort((a, b) => a.start_time - b.start_time)
-})
+function getEvent(id, events) {
+  return events.find(e => e.id === id)
+}
 
 </script>
 
@@ -49,11 +39,11 @@ const processedEvents = computed(() => {
               new Date(event.start_time).toLocaleDateString()
             }}
             </time>
-            <a class="relative z-10 rounded-full bg-gray-50 py-1.5 px-3 font-medium text-gray-600 hover:bg-gray-100">{{ event.event_type }}</a>
+            <a rel="noopener noreferrer" target="_blank" class="relative z-10 rounded-full bg-gray-50 py-1.5 px-3 font-medium text-gray-600 hover:bg-gray-100">{{ event.event_type }}</a>
           </div>
           <div class="group relative">
             <h3 class="mt-3 text-lg font-semibold leading-6 text-gray-900 group-hover:text-gray-600 text-left">
-              <a :href="event.public_url">
+              <a :href="event.public_url" rel="noopener noreferrer" target="_blank">
                 <span class="absolute inset-0" />
                 {{ event.name }}
               </a>
@@ -73,9 +63,12 @@ const processedEvents = computed(() => {
               </p>
               <p class="font-semibold text-gray-900 text-left">
                 Related: 
-                <a v-for="id in event.related_events" :key="id" class="relative z-10 rounded-full bg-gray-50 py-1.5 px-3 font-medium text-gray-600 hover:bg-gray-100">{{
-                  id
-                }}</a>
+                <br />
+                <span v-for="id in event.related_events" :key="id" class="text-left">
+                  <a :href="getEvent(id, events)?.public_url" class="relative z-10 inline-block rounded-full bg-gray-50 py-1.5 px-3 font-medium text-gray-600 hover:bg-gray-100 text-ellipsis ml-0 mr-2 my-0.5 text-xs" rel="noopener noreferrer" target="_blank">{{
+                    getEvent(id, events)?.name
+                  }}</a>
+                </span>
               </p>
             </div>
           </div>
