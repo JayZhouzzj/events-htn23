@@ -43,7 +43,7 @@ function getEvent(id, events) {
           </div>
           <div class="group relative">
             <h3 class="mt-3 text-lg font-semibold leading-6 text-gray-900 group-hover:text-gray-600 text-left">
-              <a :href="event.public_url" rel="noopener noreferrer" target="_blank">
+              <a :href="loggedIn ? event.private_url : event.public_url" rel="noopener noreferrer" target="_blank">
                 <span class="absolute inset-0" />
                 {{ event.name }}
               </a>
