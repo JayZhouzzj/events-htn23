@@ -55,7 +55,7 @@ function getEvent(id, events) {
               <p class="font-semibold text-gray-900 text-left">
                 {{ event.speakers.length > 1 ? "Speakers:" : "Speaker: "}}
                 <span v-for="(speaker, index) in event.speakers" :key="speaker.name">
-                  <a href="#">
+                  <a :href="'https://www.google.com/search?q=' + speaker.name" rel="noopener noreferrer" target="_blank">
                     {{ speaker.name }}
                   </a>
                   <span v-if="index !== event.speakers.length - 1"> ⋅ </span>
@@ -65,7 +65,7 @@ function getEvent(id, events) {
                 Related: 
                 <br />
                 <span v-for="id in event.related_events" :key="id" class="text-left">
-                  <a v-if="getEvent(id, events)" :href="getEvent(id, events).public_url" class="relative z-10 inline-block rounded-full bg-gray-50 py-1.5 px-3 font-medium text-gray-600 hover:bg-gray-100 text-ellipsis ml-0 mr-2 my-0.5 text-xs" rel="noopener noreferrer" target="_blank">{{
+                  <a v-if="getEvent(id, events)" :href="loggedIn ? getEvent(id, events).private_url : getEvent(id, events).public_url" class="relative z-10 inline-block rounded-full bg-gray-50 py-1.5 px-3 font-medium text-gray-600 hover:bg-gray-100 text-ellipsis ml-0 mr-2 my-0.5 text-xs" rel="noopener noreferrer" target="_blank">{{
                     getEvent(id, events).name
                   }}</a>
                 </span>
