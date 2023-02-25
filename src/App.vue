@@ -4,7 +4,8 @@ import gql from 'graphql-tag';
 import EventList from './components/EventList.vue'
 import { ref } from 'vue'
 
-const loggedIn = ref(false);
+const loggedIn = ref(false)
+const eventList = ref()
 
 const EVENTS_QUERY = gql`
   query {
@@ -28,12 +29,16 @@ const EVENTS_QUERY = gql`
 
 const { result, loading, error } = useQuery(EVENTS_QUERY)
 
+function toggleLogin() {
+  // Let everyone log in for the moment.
+  loggedIn.value = !loggedIn.value
+  eventList.value.openModal()
+}
 </script>
 
 <template>
   <div class="flex justify-end items-center h-16">
-    <!-- Let everyone login for the moment -->
-    <button @click="loggedIn = !loggedIn" class="px-4 py-2 font-medium text-white bg-indigo-500 rounded-md hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-opacity-50">
+    <button @click="toggleLogin" class="px-4 py-2 font-medium text-white bg-indigo-500 rounded-md hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-opacity-50">
       {{loggedIn ? "Log out" : "Log in"}}
     </button>
   </div>
@@ -42,7 +47,8 @@ const { result, loading, error } = useQuery(EVENTS_QUERY)
   <div v-else-if="result">
     <EventList 
       :events="loggedIn ? result.sampleEvents : result.sampleEvents.filter(e => e.public_url)" 
-      :loggedIn = "loggedIn"
+      :loggedIn="loggedIn"
+      ref="eventList"
     />
   </div>
 </template>

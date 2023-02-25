@@ -1,5 +1,8 @@
 <script setup>
-import { reactive, computed } from 'vue'
+import { ref, reactive, computed } from 'vue'
+import LogInModal from './LogInModal.vue'
+
+const openLogInModal = ref(false)
 
 const props = defineProps({
   events: {
@@ -27,11 +30,20 @@ function getEvent(id) {
   return this.eventsMap[id]
 }
 
+function openModal() {
+  openLogInModal.value = true
+}
+
+defineExpose({
+  openModal
+})
+
 </script>
 
 <template>
-  <div class="bg-white py-24 sm:py-32">
+  <div class="bg-white py-24 sm:py-32">  
     <div class="mx-auto max-w-7xl px-6 lg:px-8">
+      <LogInModal :open="openLogInModal" @close="openLogInModal = false"/>
       <div class="mx-auto max-w-2xl lg:mx-0">
         <h2 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl text-left">Events</h2>
         <p class="mt-2 text-lg leading-8 text-gray-600 text-left">Hack the North</p>
