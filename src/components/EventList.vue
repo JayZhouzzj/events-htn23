@@ -1,7 +1,7 @@
 <script setup>
-import { computed } from 'vue'
+import { reactive, computed } from 'vue'
 
-defineProps({
+const props = defineProps({
   events: {
     type: Array,
     default: () => []
@@ -12,8 +12,19 @@ defineProps({
   }
 })
 
-function getEvent(id, events) {
-  return events.find(e => e.id === id)
+const sortedEvents = computed(() => {
+  return props.events.slice().sort((a, b) => (a.start_time - b.start_time))
+})
+
+const eventsMap = computed(() => {
+  return props.events.reduce((acc, curr) => {
+    acc[curr.id] = curr
+    return acc
+  }, {})
+})
+
+function getEvent(id) {
+  return this.eventsMap[id]
 }
 
 </script>
@@ -26,7 +37,7 @@ function getEvent(id, events) {
         <p class="mt-2 text-lg leading-8 text-gray-600 text-left">Hack the North</p>
       </div>
       <div class="mx-auto mt-10 grid max-w-2xl grid-cols-1 gap-y-16 gap-x-8 border-t border-gray-200 pt-10 sm:mt-16 sm:pt-16 lg:mx-0 lg:max-w-none lg:grid-cols-3">
-        <article v-for="event in events" :key="event.id" class="flex max-w-xl flex-col items-start justify-start">
+        <article v-for="event in sortedEvents" :key="event.id" class="flex max-w-xl flex-col items-start justify-start">
           <div class="flex items-center gap-x-4 text-xs">
             <time :datetime="event.start_time" class="text-gray-500">{{ 
               new Date(event.start_time).toLocaleTimeString(undefined, {
@@ -65,8 +76,8 @@ function getEvent(id, events) {
                 Related: 
                 <br />
                 <span v-for="id in event.related_events" :key="id" class="text-left">
-                  <a v-if="getEvent(id, events)" :href="loggedIn ? getEvent(id, events).private_url : getEvent(id, events).public_url" class="relative z-10 inline-block rounded-full bg-gray-50 py-1.5 px-3 font-medium text-gray-600 hover:bg-gray-100 text-ellipsis ml-0 mr-2 my-0.5 text-xs" rel="noopener noreferrer" target="_blank">{{
-                    getEvent(id, events).name
+                  <a v-if="getEvent(id)" :href="loggedIn ? getEvent(id).private_url : getEvent(id).public_url" class="relative z-10 inline-block rounded-full bg-gray-50 py-1.5 px-3 font-medium text-gray-600 hover:bg-gray-100 text-ellipsis ml-0 mr-2 my-0.5 text-xs" rel="noopener noreferrer" target="_blank">{{
+                    getEvent(id).name
                   }}</a>
                 </span>
               </p>
