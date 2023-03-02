@@ -27,7 +27,7 @@ const eventsMap = computed(() => {
 })
 
 function getEvent(id) {
-  return this.eventsMap[id]
+  return eventsMap.value[id]
 }
 
 function openModal() {
